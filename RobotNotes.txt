@@ -1,0 +1,24 @@
+In mm
+Cartesian product - x,y,z 
+
+
+Quaternion ortientation
+
+
+Turning on Hand 
+make hand work turn on air  compressor on back. 
+
+
+
+
+Turning on robot
+Click ABB
+on pad go to production window.
+click on the first program
+
+left pp to main 
+
+turn Left to make automatic.
+turn white button for motors
+
+pres the play button on the pad. 
