@@ -1,5 +1,5 @@
 Image 1: 
-Image coordinates from PIL: ?
+Image coordinates from PIL: #bring arm on top [1420,1100,633] #bring arm straight down [1420,1100,90]
 
 robot cartesian and orthonogo:   [[379.99, -158.0, 89.99], [0.5, 0.5, 0.5, 0.5]]
 robot joint position:  [-27.16, 69.28, 16.19, 152.77, 85.97, -87.93]
