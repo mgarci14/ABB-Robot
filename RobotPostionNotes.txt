@@ -16,3 +16,168 @@ robot axis positon Not needed for our Project:  [89999994.0, 89999994.0, 8999999
 Image 3:
 Image coordinates from PIL: ?
 
+
+
+
+def getLineFunction(p1,p2): 
+    m = (p2[1]-p1[1])/(p2[0]-p1[0])
+    b = p1[1]-(m*p1[0])
+    
+    return (m,b)
+    
+def f(x,m,b):
+
+        return (x*m) + b
+
+
+#test point
+objectPoint = [[204,-380,630],[.5,.5,.5,.5]]
+endPoint = [[335,345,89],[0.5,0.5,0.5,0.5]]
+def moveObject(R,objectPoint,endPoint):
+    
+              
+    # do it when at orgiin
+    cam = cv2.VideoCapture(0) 
+    R.set_Do_Grip(0)
+   # R.set_Do_Grip(0)
+    #R.set_cartesian(objectPoint)
+    #R.set_cartesian([[204,-380,89],[.5,.5,.5,.5]])
+    time.sleep(1.7)
+    p2 = objectPoint[0][0:2]
+    R.set_joints([0,0,0,0,0,90])
+    time.sleep(1.7)
+    p1 = R.get_cartesian()[0][0:2]
+    time.sleep(1.7)
+    pose = R.get_cartesian()[1]
+    time.sleep(1.7)
+    z = R.get_cartesian()[0][2]
+
+# do it when at endpoint
+
+ # pretend y is x
+    m,b = getLineFunction([p1[1],p1[0]],[p2[1],p2[0]])
+    
+    if p1[1] <= p2[1]:
+        for y in range(int(p1[1]),int(p2[1]+1)):
+            print(R.get_joints())
+            R.set_cartesian([[f(y,m,b),y,z],pose])
+            ret_val, capturedImg = cam.read()
+            cv2.imshow('my webcam', capturedImg)
+            key = None
+            key = cv2.waitKey(1)
+            if key == q:
+                cam.release()
+                cv2.destroyAllWindows()
+    else:
+        temp = range(int(p2[1]), int(p1[1] + 1))
+        list =[]
+        for i in temp:
+            
+            list.append(i)
+    
+        
+        list = reversed(list)
+        for y in list:
+            #print(R.get_joints())
+            print(y)
+            R.set_cartesian([[f(p1[1] + y, m, b), p1[1] + y, z], pose])
+             ret_val, capturedImg = cam.read()
+            cv2.imshow('my webcam', capturedImg)
+            key = None
+            key = cv2.waitKey(1)
+            if key == q:
+                cam.release()
+                cv2.destroyAllWindows()
+        
+        
+        
+    
+    time.sleep(1.7)
+    x = R.get_cartesian()[0][0]
+    time.sleep(1.7)
+    y = R.get_cartesian()[0][1]
+    while z!=75:
+        z -=1
+        R.set_cartesian([[x,y,z],pose])
+    
+    R.set_Do_Grip(1)
+    time.sleep(1.7)
+    while z!=630:
+        z+=1
+        R.set_cartesian([[x,y,z],pose])
+   
+    goToEndpoint(R,endPoint,objectPoint)
+
+def goToEndpoint(R,endPoint,objectPoint):
+    
+   
+    p2 = endPoint[0][0:2]
+  
+    time.sleep(1.7)
+    p1 = R.get_cartesian()[0][0:2]
+    time.sleep(1.7)
+    pose = R.get_cartesian()[1]
+    time.sleep(1.7)
+    z = R.get_cartesian()[0][2]
+    
+    # do it when at endpoint
+    
+    
+    m,b = getLineFunction([p1[1],p1[0]],[p2[1],p2[0]])
+    
+    
+    if p1[1] <= p2[1]:
+        for y in range(int(p1[1]),int(p2[1]+1)):
+            print(R.get_joints())
+            R.set_cartesian([[f(y,m,b),y,z],pose])
+            ret_val, capturedImg = cam.read()
+            cv2.imshow('my webcam', capturedImg)
+            key = None
+            key = cv2.waitKey(1)
+            if key == q:
+                cam.release()
+                cv2.destroyAllWindows()
+    else:
+        temp = range(int(p2[1]), int(p1[1] + 1))
+        list =[]
+        for i in temp:
+            list.append(i)
+    
+        
+        list = reversed(list)
+        for y in list:
+            print(R.get_joints())
+            R.set_cartesian([[f(p1[1] + y, m, b), p1[1] + y, z], pose])
+            ret_val, capturedImg = cam.read()
+            cv2.imshow('my webcam', capturedImg)
+            key = None
+            key = cv2.waitKey(1)
+            if key == q:
+                cam.release()
+                cv2.destroyAllWindows()
+        
+        
+        
+    
+    time.sleep(1.7)
+    x = R.get_cartesian()[0][0]
+    time.sleep(1.7)
+    y = R.get_cartesian()[0][1]
+    while z!=90:
+        z -=1
+        R.set_cartesian([[x,y,z],pose])
+        ret_val, capturedImg = cam.read()
+        cv2.imshow('my webcam', capturedImg)
+        key = None
+        key = cv2.waitKey(1)
+        if key == q:
+            cam.release()
+            cv2.destroyAllWindows()
+    
+    R.set_Do_Grip(0)
+    cam.release()
+    cv2.destroyAllWindows()
+    R.set_cartesian([[x,y,630],pose])
+    R.set_joints([0,0,0,0,0,90])
+    return
+    
